@@ -7,16 +7,16 @@
 
 
 ## Установка
-1. Открыть [страницу релизов](https://github.com/maseckt/cristalix-wl-fix/releases) и скачать `cristalix.appimage` с последнего релиза
+1. Загрузите `cristalix.appimage` с [последнего релиза](https://github.com/maseckt/cristalix-wl-fix/releases/latest).
 2. Выдайте файлу права на исполнение:
 ```sh
 chmod +x cristalix.appimage
 ```
-3. Открываем файл:
+3. Запустите приложение:
 ```sh
 ./cristalix.appimage
 ```
-Или используйте [GearLever](https://github.com/mijorus/gearlever), чтоб быстро добавить ярлык приложения в `~/.local/share/applications/`.
+Или используйте [GearLever](https://github.com/mijorus/gearlever), чтоб быстро добавить ярлык игры в `~/.local/share/applications/`.
 
 
 ## Дополнительные параметры
