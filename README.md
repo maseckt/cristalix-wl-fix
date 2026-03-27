@@ -9,6 +9,7 @@
 
 
 ## Установка
+### AppImage
 1. Загрузите `cristalix.appimage` с [последнего релиза](https://github.com/maseckt/cristalix-wl-fix/releases/latest).
 2. Выдайте файлу права на исполнение:
 ```sh
@@ -19,6 +20,12 @@ chmod +x cristalix.appimage
 ./cristalix.appimage
 ```
 Или используйте [GearLever](https://github.com/mijorus/gearlever), чтоб быстро добавить ярлык игры в `~/.local/share/applications/`.
+### `.pkg.tar.zst` (ArchLinux)
+1. Загрузите `cristalix-wl-fix-1.0.0-1-any.pkg.tar.zst`.
+2.  Установите пакет:
+```sh
+sudo pacman -U cristalix-wl-fix-1.0.0-1-any.pkg.tar.zst
+```
 
 
 ## Дополнительные параметры
