@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Cristalix
+GenericName=Legendary Minecraft servers with mini-games and mods
+Exec=AppRun
+Icon=cristalix
+Type=Application
+Categories=Game;
+Terminal=false
+X-AppImage-Version=1.0.0

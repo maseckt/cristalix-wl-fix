@@ -1,0 +1,49 @@
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+export __GL_THREADED_OPTIMIZATIONS=0
+
+# Parse arguments for --jdk
+ARGS=()
+for arg in "$@"; do
+  case $arg in
+    --jdk=*)
+      JAVA_BIN="${arg#*=}"
+      ;;
+    *)
+      ARGS+=("$arg")
+      ;;
+  esac
+done
+
+if [ -z "$JAVA_BIN" ]; then
+    JAVA_BIN=$(which java 2>/dev/null)
+
+    if [ -z "$JAVA_BIN" ]; then
+        for dir in /usr/lib/jvm/*; do
+            if [ -x "$dir/bin/java" ]; then
+                JAVA_BIN="$dir/bin/java"
+                break
+            fi
+        done
+    fi
+fi
+
+if [ -z "$JAVA_BIN" ] || [ ! -x "$JAVA_BIN" ]; then
+    echo "Error: Java not found on system"
+    exit 1
+fi
+
+JAR_PATH="$HOME/.cristalix/Cristalix.jar"
+if [ ! -f "$JAR_PATH" ]; then
+    echo "Downloading Cristalix.jar..."
+    mkdir -p "$HOME/.cristalix"
+    curl -L -o "$JAR_PATH" https://cristalix.gg/content/launcher/Cristalix.jar
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to download Cristalix.jar"
+        exit 1
+    fi
+fi
+
+echo "Using Java: $JAVA_BIN" >> ~/cristalix_launcher.log
+exec "$JAVA_BIN" -jar "$JAR_PATH" "${ARGS[@]}"
