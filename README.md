@@ -3,7 +3,7 @@
 
 
 ## Требования
-- **Java:** Установленная в системе JDK 21+ (Cristalix рекомендует [BellSoft Liberica JDK 21](https://bell-sw.com/pages/downloads/#jdk-21-lts)).
+- **Java:** Установленная в системе JDK 21+ (Cristalix рекомендует [BellSoft Liberica JDK](https://bell-sw.com/pages/downloads/#jdk-21-lts)).
 
 
 ## Установка
