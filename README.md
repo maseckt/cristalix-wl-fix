@@ -61,3 +61,22 @@ ARCH=x86_64 appimagetool Cristalix.AppDir cristalix.appimage
 
 ## Проблемы
 При возникновении каких-либо проблем, обязательно пишите в [Issues](https://github.com/maseckt/cristalix-wl-fix/issues)!
+
+<details>
+<summary><b>Если вы используете оконный менеджер (WM)</b></summary>
+  Если вы используете оконные менеджеры (Например, Hyprland), окно лаунчера может не очень красиво растягиваться.
+  
+  Чтобы исправить эту проблему, вы можете сделать окно плавающим (в режиме float).
+  
+  Пример для Hyprland:
+  ```
+  windowrule {
+    name = Cristalix-float
+    match:title = ^(Cristalix)$
+    match:xwayland = 1
+    float = on
+    size = 1220 650
+    center = on
+  }
+  ```
+</details>
