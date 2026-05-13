@@ -68,7 +68,20 @@ ARCH=x86_64 appimagetool Cristalix.AppDir cristalix.appimage
   
   Чтобы исправить эту проблему, вы можете сделать окно плавающим (в режиме float).
   
-  Пример для Hyprland:
+  Пример для Hyprland 0.55+:
+  ```lua
+  hl.window_rule({
+    name   = "Cristalix-float",
+    match  = {
+        title = "^(Cristalix)$",
+               xwayland = true
+    },
+    float  = true,
+    size   = {1220, 650},
+    center = true
+})
+  ```
+  Для Hyprland 0.54
   ```
   windowrule {
     name = Cristalix-float
