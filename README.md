@@ -1,7 +1,7 @@
 # cristalix-wl-fix
 Скрипт запуска Cristalix на Wayland с видеокартами NVIDIA.
 
-Данный скрипт [скачивает оффициальный лаунчер Cristalix](https://github.com/maseckt/cristalix-wl-fix/blob/9a5a91aa977d22edad6e4bbefaaa289f6f9eac7e/AppRun#L28-L42) и применяет переменную `export __GL_THREADED_OPTIMIZATIONS=0`, чтоб игра работала с Wayland на вашей NVIDIA 
+Данный скрипт [скачивает оффициальный лаунчер Cristalix](https://github.com/maseckt/cristalix-wl-fix/blob/9a5a91aa977d22edad6e4bbefaaa289f6f9eac7e/AppRun#L28-L42) и применяет переменную `__GL_THREADED_OPTIMIZATIONS=0`, чтоб игра работала с Wayland на вашей NVIDIA 
 
 
 ## Требования
@@ -34,6 +34,13 @@ sudo pacman -U cristalix-wl-fix-1.0.0-1-any.pkg.tar.zst
 ```sh
 ./cristalix.appimage --jdk=/usr/lib/jvm/liberica-jdk-21/bin/java
 ```
+
+
+## Важное примечание
+
+Начиная с версии `1.0.1`, вертикальная синхронизация (**VSync**) принудительно отключена. Переменные `vblank_mode=0` и `__GL_SYNC_TO_VBLANK=0` интегрированы в обертку по умолчанию.
+
+Это необходимый костыль для обхода архитектурных ограничений связки Wayland + Xwayland. При потере фокуса окна или переключении воркспейса композитор замораживает отправку frame-событий. Если VSync включен, графический поток блокируется, за ним засыпает основной поток Java, а внутренний тайм-аут (`Watchdog`) убивает клиент, считая это намертво зависшим процессом. Без VSync игра стабильна в любых условиях.
 
 ## Сборка AppImage
 Если вы хотите собрать AppImage самостоятельно из исходников:
