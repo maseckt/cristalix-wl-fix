@@ -9,7 +9,7 @@ depends=('java-runtime>=21' 'curl')
 provides=("cristalix")
 conflicts=("cristalix")
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('edce1e86f8f448bcc4a1fc21df4b3e98d6b315f7f0cdf9987ecaebe264dd30e6')
+sha256sums=('b604299a81df66ecfd8de4272f58d9b9c0d9f20f3e7fdcc68397fba098108477')
 
 package() {
   cd "${pkgname}-${pkgver}"
