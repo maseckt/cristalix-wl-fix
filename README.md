@@ -1,7 +1,7 @@
 # cristalix-wl-fix
 Скрипт запуска Cristalix на Wayland с видеокартами NVIDIA.
 
-Данный скрипт [скачивает оффициальный лаунчер Cristalix](https://github.com/maseckt/cristalix-wl-fix/blob/31d6fce1b11f714dbc13b851b23fa15a31ff5cd9/AppRun#L37-L46) и применяет переменную `export __GL_THREADED_OPTIMIZATIONS=0`, чтоб игра работала с Wayland на вашей NVIDIA 
+Данный скрипт [скачивает оффициальный лаунчер Cristalix](https://github.com/maseckt/cristalix-wl-fix/blob/9a5a91aa977d22edad6e4bbefaaa289f6f9eac7e/AppRun#L28-L42) и применяет переменную `export __GL_THREADED_OPTIMIZATIONS=0`, чтоб игра работала с Wayland на вашей NVIDIA 
 
 
 ## Требования
