@@ -1,7 +1,7 @@
 # cristalix-wl-fix
 Скрипт запуска Cristalix, исправляющий проблемы на Wayland с видеокартами NVIDIA.
 
-Данный скрипт загружает [оффициальный лаунчер Cristalix](https://cristalix.gg/content/launcher/Cristalix.jar) и применяет переменную `__GL_THREADED_OPTIMIZATIONS=0`, чтоб игра работала с Wayland на вашей NVIDIA 
+Данный скрипт загружает [официальный лаунчер Cristalix](https://cristalix.gg/content/launcher/Cristalix.jar) и применяет переменную `__GL_THREADED_OPTIMIZATIONS=0`, чтобы игра работала с Wayland на вашей NVIDIA 
 
 ## Требования
 - **Java:** Установленная в системе JDK 21+ (Например, Cristalix рекомендует [BellSoft Liberica JDK](https://bell-sw.com/pages/downloads/#jdk-21-lts)).
@@ -20,10 +20,10 @@ chmod +x cristalix.appimage
 Если хотите быстро сделать ярлык в `~/.local/share/applications/`, воспользуйтесь [GearLever](https://github.com/mijorus/gearlever).
 
 ### `.pkg.tar.zst` (ArchLinux)
-1. Загрузите `cristalix-wl-fix-1.0.0-1-any.pkg.tar.zst`.
+1. Загрузите `cristalix-wl-fix-*.pkg.tar.zst` с [последнего релиза](https://github.com/maseckt/cristalix-wl-fix/releases/latest).
 2.  Установите пакет:
 ```sh
-sudo pacman -U cristalix-wl-fix-1.0.0-1-any.pkg.tar.zst
+sudo pacman -U cristalix-wl-fix-*.pkg.tar.zst
 ```
 3. Запустите скрипт:
 ```sh
@@ -44,7 +44,7 @@ cristalix
 Начиная с версии `1.0.1`, вертикальная синхронизация принудительно отключена. Переменные `vblank_mode=0` и `__GL_SYNC_TO_VBLANK=0` интегрированы в обертку для обхода этих архитектурных ограничений Wayland + Xwayland.
 
 ## Сборка
-### AppImage
+### `.AppImage`
 Для сборки AppImage самостоятельно из исходников:
 1. Склонируйте исходники из репозитория:
 ```sh 
@@ -63,6 +63,22 @@ chmod +x Cristalix.AppDir/AppRun
 ARCH=x86_64 appimagetool Cristalix.AppDir cristalix.appimage
 ```
 
+### `.pkg.tar.zst` (ArchLinux)
+Для самостоятельной сборки нативного пакета:
+1. Склонируйте `PKGBUILD` из AUR репозитория:
+```sh
+git clone https://aur.archlinux.org/cristalix-wl-fix.git
+cd cristalix-wl-fix/
+```
+2. Запустите сборку с автоматической установкой зависимостей:
+```sh
+makepkg -si
+```
+Если нужно просто скомпилировать пакет без его интеграции в систему:
+```sh
+makepkg -s
+```
+Готовый к установке архив `.pkg.tar.zst` появится в этой же папке.
 
 ## Проблемы
 При возникновении каких-либо проблем, обязательно пишите в [Issues](https://github.com/maseckt/cristalix-wl-fix/issues)!
