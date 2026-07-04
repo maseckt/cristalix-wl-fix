@@ -1,0 +1,8 @@
+.DS_Store
+._*
+*.tar.gz
+*.tar.zst
+*.sig
+PKGBUILD
+pkg/
+src/

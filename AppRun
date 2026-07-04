@@ -1,11 +1,14 @@
 #!/bin/bash
-export __GL_THREADED_OPTIMIZATIONS=0
-export vblank_mode=0
-export __GL_SYNC_TO_VBLANK=0
+set -euo pipefail
 
+export __GL_THREADED_OPTIMIZATIONS=0
+export __GL_SYNC_TO_VBLANK=0
+export vblank_mode=0
+
+JAVA_BIN=""
 ARGS=()
 for arg in "$@"; do
-  case $arg in
+  case "$arg" in
     --jdk=*)
       JAVA_BIN="${arg#*=}"
       ;;
@@ -16,31 +19,31 @@ for arg in "$@"; do
 done
 
 if [ -z "$JAVA_BIN" ]; then
-    JAVA_BIN=$(command -v java 2>/dev/null)
+  JAVA_BIN=$(command -v java 2>/dev/null || true)
 fi
 
 if [ -z "$JAVA_BIN" ] || [ ! -x "$JAVA_BIN" ]; then
-    if command -v notify-send &>/dev/null; then
-        notify-send -u critical -i dialog-error "Cristalix Error" "Java runtime not found in PATH."
-    fi
-    echo "Error: Java not found on system" >&2
-    exit 1
+  if command -v notify-send &>/dev/null; then
+    notify-send -u critical -i dialog-error "Cristalix Error" "Java runtime not found in PATH."
+  fi
+  echo "Error: Java not found on system" >&2
+  exit 1
 fi
 
 JAR_PATH="$HOME/.cristalix/Cristalix.jar"
 if [ ! -f "$JAR_PATH" ]; then
+  if command -v notify-send &>/dev/null; then
+    notify-send "Cristalix" "Downloading official launcher..."
+  fi
+  mkdir -p "$HOME/.cristalix"
+
+  if ! curl -L -f -o "$JAR_PATH" https://cristalix.gg/content/launcher/Cristalix.jar; then
     if command -v notify-send &>/dev/null; then
-        notify-send "Cristalix" "Downloading official launcher..."
+      notify-send -u critical -i dialog-error "Cristalix Error" "Failed to download Cristalix.jar"
     fi
-    mkdir -p "$HOME/.cristalix"
-    curl -L -o "$JAR_PATH" https://cristalix.gg/content/launcher/Cristalix.jar
-    if [ $? -ne 0 ]; then
-        if command -v notify-send &>/dev/null; then
-            notify-send -u critical -i dialog-error "Cristalix Error" "Failed to download Cristalix.jar"
-        fi
-        echo "Error: Failed to download Cristalix.jar" >&2
-        exit 1
-    fi
+    echo "Error: Failed to download Cristalix.jar" >&2
+    exit 1
+  fi
 fi
 
 echo "Using Java: $JAVA_BIN"
