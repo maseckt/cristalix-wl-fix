@@ -27,11 +27,7 @@ jobs:
           echo "${{ secrets.GPG_SUBKEY_PRIVATE }}" | base64 -d > subkey.gpg
 
           gpg --batch --import subkey.gpg
-
-          # IMPORTANT: fix trust model
           echo "trust-model always" >> ~/.gnupg/gpg.conf
-
-          # verify key exists
           gpg --list-secret-keys --keyid-format=long
 
       - name: Package secure source tarball
@@ -55,12 +51,14 @@ jobs:
           VERSION="${TAG_NAME#v}"
 
           touch "Cristalix-${TAG_NAME}.AppImage"
+
           zstd -19 "Cristalix-${TAG_NAME}.AppImage" \
             -o "cristalix-wl-fix-${VERSION}.zst"
 
-      - name: Sign release assets with GPG
+      - name: Sign release assets
         env:
-          KEY_ID: 015883FEDAF890D8
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
         run: |
           TAG_NAME="${{ github.ref_name }}"
           VERSION="${TAG_NAME#v}"
@@ -69,16 +67,16 @@ jobs:
             "cristalix-wl-fix-${VERSION}.tar.gz" \
             "cristalix-wl-fix-${VERSION}.zst"
           do
-            gpg --batch \
-                --yes \
-                --pinentry-mode loopback \
-                --passphrase "${{ secrets.GPG_PASSPHRASE }}" \
-                --local-user "$KEY_ID" \
-                --detach-sign --armor \
-                "$file"
+            printf '%s' "$GPG_PASSPHRASE" | gpg --batch \
+              --yes \
+              --pinentry-mode loopback \
+              --passphrase-fd 0 \
+              --local-user "$GPG_KEY_ID" \
+              --detach-sign --armor \
+              "$file"
           done
 
-      - name: Generate Release and upload assets
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
