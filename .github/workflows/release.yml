@@ -1,0 +1,63 @@
+name: Automated Release Builder
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Install compression tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zstd
+
+      - name: Import GPG subkey
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Package secure source tarball
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          DIR_NAME="cristalix-wl-fix-${VERSION}"
+          mkdir -p "../${DIR_NAME}"
+          cp -r . "../${DIR_NAME}/"
+          cd ..
+          tar --exclude='.git*' --exclude='.DS_Store' --exclude='._*' -czf "${DIR_NAME}.tar.gz" -C "." "${DIR_NAME}"
+          mv "${DIR_NAME}.tar.gz" "${{ github.workspace }}/"
+
+      - name: Build AppImage and compress to ZST
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          touch "Cristalix-${TAG_NAME}.AppImage"
+          zstd -19 "Cristalix-${TAG_NAME}.AppImage" -o "cristalix-wl-fix-${VERSION}.zst"
+
+      - name: Sign release assets with GPG
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          gpg --detach-sign --armor "cristalix-wl-fix-${VERSION}.tar.gz"
+          gpg --detach-sign --armor "cristalix-wl-fix-${VERSION}.zst"
+
+      - name: Generate Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: |
+            cristalix-wl-fix-*.tar.gz
+            cristalix-wl-fix-*.tar.gz.asc
+            cristalix-wl-fix-*.zst
+            cristalix-wl-fix-*.zst.asc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
