@@ -25,7 +25,7 @@ chmod +x cristalix.appimage
 ```sh
 sudo pacman -U cristalix-wl-fix-*.pkg.tar.zst
 ```
-3. Запустите скрипт:
+3. Запустите:
 ```sh
 cristalix
 ```
