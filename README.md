@@ -114,3 +114,5 @@ makepkg -s
   }
   ```
 </details>
+
+### Thanks [JustJabka](https://forum.cristalix.gg/threads/300674/)!
