@@ -5,6 +5,16 @@ export __GL_THREADED_OPTIMIZATIONS=0
 export __GL_SYNC_TO_VBLANK=0
 export vblank_mode=0
 
+send_notification() {
+  local urgency="${1:-normal}"
+  local title="$2"
+  local message="$3"
+
+  if command -v notify-send &>/dev/null; then
+    notify-send -a "Cristalix-wl-fix" -i "cristalix" -r 777 -u "$urgency" "$title" "$message"
+  fi
+}
+
 JAVA_BIN=""
 ARGS=()
 for arg in "$@"; do
@@ -23,25 +33,21 @@ if [ -z "$JAVA_BIN" ]; then
 fi
 
 if [ -z "$JAVA_BIN" ] || [ ! -x "$JAVA_BIN" ]; then
-  if command -v notify-send &>/dev/null; then
-    notify-send -u critical -i dialog-error "Cristalix Error" "Java runtime not found in PATH."
-  fi
+  send_notification "critical" "Cristalix Error" "Java runtime not found in PATH."
   echo "Error: Java not found on system" >&2
   exit 1
 fi
 
 JAR_PATH="$HOME/.cristalix/Cristalix.jar"
-if [ ! -f "$JAR_PATH" ]; then
-  if command -v notify-send &>/dev/null; then
-    notify-send "Cristalix" "Downloading official launcher..."
-  fi
+
+if [ ! -f "$JAR_PATH" ] || [ ! -s "$JAR_PATH" ]; then
+  send_notification "normal" "Cristalix" "Downloading official launcher..."
   mkdir -p "$HOME/.cristalix"
 
-  if ! curl -L -f -o "$JAR_PATH" https://cristalix.gg/content/launcher/Cristalix.jar; then
-    if command -v notify-send &>/dev/null; then
-      notify-send -u critical -i dialog-error "Cristalix Error" "Failed to download Cristalix.jar"
-    fi
+  if ! curl -L -f --connect-timeout 3 --max-time 15 -o "$JAR_PATH" https://cristalix.gg/content/launcher/Cristalix.jar; then
+    send_notification "critical" "Error" "Failed to download Cristalix.jar"
     echo "Error: Failed to download Cristalix.jar" >&2
+    rm -f "$JAR_PATH"
     exit 1
   fi
 fi
