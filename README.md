@@ -115,4 +115,6 @@ makepkg -s
   ```
 </details>
 
+### Этот репозиторий — зеркало с [Codeberg.org](https://codeberg.org/maseckt/cristalix-wl-fix)
+
 ### Thanks [JustJabka](https://forum.cristalix.gg/threads/300674/)!
