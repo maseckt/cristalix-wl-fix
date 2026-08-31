@@ -44,7 +44,7 @@ if [ ! -f "$JAR_PATH" ] || [ ! -s "$JAR_PATH" ]; then
   send_notification "normal" "Cristalix" "Downloading official launcher..."
   mkdir -p "$HOME/.cristalix"
 
-  if ! curl -L -f --connect-timeout 3 --max-time 15 -o "$JAR_PATH" https://cristalix.gg/content/launcher/Cristalix.jar; then
+  if ! curl -L -f --connect-timeout 3 --max-time 15 -o "$JAR_PATH" https://cristalix.gg/content/launcher/new/CristalixLauncher.jar; then
     send_notification "critical" "Error" "Failed to download Cristalix.jar"
     echo "Error: Failed to download Cristalix.jar" >&2
     rm -f "$JAR_PATH"
